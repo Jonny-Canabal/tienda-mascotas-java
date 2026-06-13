@@ -50,6 +50,7 @@ public class ProductController {
         return productService.createProduct(product);
     }
 
+    /**Busca el producto por id, actualiza*/
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody Product product){
 
@@ -62,5 +63,19 @@ public class ProductController {
         Product updatedProduct = productService.updateProduct(id, product);
 
         return ResponseEntity.ok(updatedProduct);
+    }
+
+    /*** Elimina un producto por su ID.* Devuelve 404 si el producto no existe.*/
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Long id){
+
+        Optional<Product> existingProduct = productService.getProductById(id);
+
+        if(existingProduct.isEmpty()){
+            return ResponseEntity.status(404).body("Producto no encontrado");
+        }
+
+        productService.deleteProduct(id);
+        return ResponseEntity.ok("Producto eliminado");
     }
 }

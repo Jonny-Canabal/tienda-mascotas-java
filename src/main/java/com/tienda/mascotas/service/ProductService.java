@@ -35,6 +35,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    /** Actualiza el producto, se establece lo que pude actualizar*/
     public Product updateProduct(Long id, Product product) {
 
         Optional<Product> optional = productRepository.findById(id);
@@ -48,5 +49,10 @@ public class ProductService {
         existingProduct.setStock(product.getStock());
 
         return productRepository.save(existingProduct);
+    }
+
+    /**Busca producto por Id, lo elimina*/
+    public void deleteProduct(Long id){
+        productRepository.deleteById(id);
     }
 }

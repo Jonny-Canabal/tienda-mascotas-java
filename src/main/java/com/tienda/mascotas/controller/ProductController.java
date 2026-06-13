@@ -34,6 +34,7 @@ public class ProductController {
     /*** Busca un producto por su ID. Retorna el producto si existe o un mensaje de error 404 si no es encontrado.*/
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable Long id){
+
         Optional<Product> product = productService.getProductById(id);
 
         if(product.isEmpty()){
@@ -47,5 +48,19 @@ public class ProductController {
     @PostMapping
     public Product createProduct(@RequestBody Product product) {
         return productService.createProduct(product);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody Product product){
+
+        Optional<Product> existingProduct = productService.getProductById(id);
+
+        if(existingProduct.isEmpty()){
+            return ResponseEntity.status(404).body("Producto no encontrado");
+        }
+
+        Product updatedProduct = productService.updateProduct(id, product);
+
+        return ResponseEntity.ok(updatedProduct);
     }
 }

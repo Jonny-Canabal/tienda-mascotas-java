@@ -2,6 +2,7 @@ package com.tienda.mascotas.controller;
 
 import com.tienda.mascotas.entity.Product;
 import com.tienda.mascotas.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,13 +47,13 @@ public class ProductController {
 
     /** Crea un nuevo producto*/
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
+    public Product createProduct(@Valid @RequestBody Product product) {
         return productService.createProduct(product);
     }
 
     /**Busca el producto por id, actualiza*/
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long id, @RequestBody Product product){
+    public ResponseEntity<?> updateProduct(@PathVariable Long id, @Valid @RequestBody Product product){
 
         Optional<Product> existingProduct = productService.getProductById(id);
 

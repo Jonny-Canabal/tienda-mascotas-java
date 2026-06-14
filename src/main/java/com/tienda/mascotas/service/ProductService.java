@@ -1,6 +1,7 @@
 package com.tienda.mascotas.service;
 
 import com.tienda.mascotas.entity.Product;
+import com.tienda.mascotas.exception.ProductNotFoundException;
 import com.tienda.mascotas.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,8 +27,9 @@ public class ProductService {
     }
 
     /** Obtiene el producto según su ID*/
-    public Optional<Product> getProductById(Long id){
-        return productRepository.findById(id);
+    public Product getProductById(Long id){
+
+        return productRepository.findById(id).orElseThrow(()-> new ProductNotFoundException("Producto no encontrado"));
     }
 
     /** Guarda un nuevo producto*/
@@ -38,9 +40,7 @@ public class ProductService {
     /** Actualiza el producto, se establece lo que pude actualizar*/
     public Product updateProduct(Long id, Product product) {
 
-        Optional<Product> optional = productRepository.findById(id);
-
-        Product existingProduct = optional.get();
+        Product existingProduct = getProductById(id);
 
         existingProduct.setName(product.getName());
         existingProduct.setPrice(product.getPrice());
@@ -53,6 +53,9 @@ public class ProductService {
 
     /**Busca producto por Id, lo elimina*/
     public void deleteProduct(Long id){
+
+        getProductById(id);
+
         productRepository.deleteById(id);
     }
 }

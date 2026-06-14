@@ -26,4 +26,10 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(errors);
     }
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<?> handlerProductNotFound(ProductNotFoundException ex){
+
+        return ResponseEntity.status(404).body(ex.getMessage());
+    }
 }

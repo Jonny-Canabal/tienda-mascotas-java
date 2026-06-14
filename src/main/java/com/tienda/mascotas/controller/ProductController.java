@@ -36,13 +36,7 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable Long id){
 
-        Optional<Product> product = productService.getProductById(id);
-
-        if(product.isEmpty()){
-            return ResponseEntity.status(404).body("Producto no encontrado");
-        }
-
-        return ResponseEntity.ok(product.get());
+        return ResponseEntity.ok(productService.getProductById(id));
     }
 
     /** Crea un nuevo producto*/
@@ -55,12 +49,6 @@ public class ProductController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProduct(@PathVariable Long id, @Valid @RequestBody Product product){
 
-        Optional<Product> existingProduct = productService.getProductById(id);
-
-        if(existingProduct.isEmpty()){
-            return ResponseEntity.status(404).body("Producto no encontrado");
-        }
-
         Product updatedProduct = productService.updateProduct(id, product);
 
         return ResponseEntity.ok(updatedProduct);
@@ -70,13 +58,8 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable Long id){
 
-        Optional<Product> existingProduct = productService.getProductById(id);
-
-        if(existingProduct.isEmpty()){
-            return ResponseEntity.status(404).body("Producto no encontrado");
-        }
-
         productService.deleteProduct(id);
+
         return ResponseEntity.ok("Producto eliminado");
     }
 }
